@@ -1,0 +1,49 @@
+
+{% macro render_blog_tag(t) %}
+  [<a href="{{ ('/blog@tag/' ~ t)|url }}">{{ t }}</a>]
+{% endmacro %}
+
+
+{% macro render_blog_tags(tags, sort=false) %}
+ {% if sort %}
+    {% for t in tags|sort -%}
+          {{render_blog_tag(t)}}
+    {% endfor %}
+  {% else %}
+  {% for t in tags -%}
+          {{render_blog_tag(t)}}
+  {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+
+{% macro render_blog_listing(post) %}
+<a href="{{ post|url }}">{{ post.title }}</a>
+<br>
+{{render_blog_tags(post.tags)}}
+<br>
+{{post.description}}
+{% endmacro %}
+
+
+{% macro render_blog_post(post, from_index=false) %}
+  <div class="blog-post">
+  {% if from_index %}
+    <h2><a href="{{ post|url }}">{{ post.title }}</a></h2>
+  {% else %}
+    <h2>{{ post.title }}</h2>
+  {% endif %}
+  <p class="meta">
+    {{ post.pub_date }}
+  
+    {% if post.tags %}
+    <br>
+    Tags: 
+    {{render_blog_tags(post.tags) }}
+    {% endif %}
+  </p>
+
+  {{ post.body }}
+  
+  </div>
+{% endmacro %}

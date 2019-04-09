@@ -1,0 +1,26 @@
+title: 
+---
+body:
+
+Welcome to my professional home on the web.
+
+I'm a computational and data scientist.
+
+
+### My Story
+
+Starting from a (mechanical) engineering background, I arrived at data science via scientific computing.
+
+### Status
+
+Data science generalist but with an interest (most experienced) in time series data.
+
+### Current thoughts and talking points
+
+* R vs. Python: Python but I respect R. I believe in the future, programming languages for data science will matter less. Either Julia becomes dominant or we figure out a ways for languages to interoperate better.
+
+* I find that I enjoy the process of solving a data science problem from conception to production. I'm flexible about modeling techniques. Sure GANs and deep learning are cool but their use needs to be justified. My flavor of data science tends to be engineering oriented to enable rapid experimentation.
+
+* I believe this whole data science thing should have been the statistician's party instead of computer science types.
+
+* Bayesian modeling is awesome. I went ahead and created a multivariate skew normal distribution for PyMC4 (Tensorflow Probability).

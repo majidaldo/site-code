@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% from "macros/blog.html" import render_blog_tags, render_blog_listing %}
+{% from "macros/pagination.html" import render_pagination %}
+{% block title %}{{ this.title }}{% endblock %}
+{% block body %}
+
+
+
+From January 2012 to March 2019, I maintained a <a href="http://msdresearch.blogspot.com">blog on blogger</a>.
+A few posts are republished here.
+
+<table style="width:100%">
+  	<col style="width:20%">
+	  <col style="width:80%">
+
+    {% if this.children.distinct("tags") %}
+    <tr>
+      <td><h3>Tags</h3></td>
+      <td>
+      </td> 
+    </tr>
+    
+    <tr>
+      <td></td>
+      <td>
+        {{render_blog_tags(this.children.distinct("tags"), sort=True )}}
+      </td>
+    </tr>
+    {% endif %}
+
+    <tr>
+      <td><h3> <a href="{{'/blog@atom/blog'|url }}"> Feed </a>
+        </h3></td>
+      <td></td>
+    </tr>
+
+    {% for post in this.children %}
+    <tr valign="top">
+      <td>{{post.pub_date}}</td>
+      <td>
+      {{render_blog_listing(post)}} 
+      </td>
+    </tr>
+
+    <tr><td><br></td><td></td></tr>
+
+    {% endfor %}
+  
+  </table>
+
+{% endblock %}
+
+

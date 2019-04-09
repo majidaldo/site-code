@@ -1,0 +1,88 @@
+title: RAPIDS for data science signals potential maturation of (big) data science computing
+---
+pub_date: 2018-10-30
+---
+author: Majid alDosari
+---
+tags:
+gpu
+gtc
+high performance computing
+machine learning
+numpy
+pandas
+sklearn
+---
+description: an opinion on where large data science computing is going
+
+---
+body:
+
+The recent [RAPIDS announcement by Nvidia](https://blogs.nvidia.com/blog/2018/10/10/gtc-europe-keynote-rapids-volvo-clara-ai/) was portrayed as 'data science on GPUs'. In my opinion, it's about the convergence of several trends in data science tools and computing that have been developing over at least 5 years. This convergence naturally materializes as 'data science on GPUs'. Nvidia pounced on the opportunity!  
+
+These trends address a dream that I have as a data scientist: I'd like to use pandas and sklearn without having to think about whether the data fits on one machine or not and to use GPUs if available. I also would like to use SQL without having to think about whether the system that I'm executing on is a database. In other words, I'd like to use my preferred programming language and associated libraries without regard to the system that executes the program.  
+
+What does this have to do with GPUs? You don't _need_ GPUs to have such a system (*cough* Spark). But it seems like Nvidia, after it made deep learning practically possible, realized there was much more that it can [accelerate upstream the data science process pipeline](https://devblogs.nvidia.com/gpu-accelerated-analytics-rapids/?ncid=em-ded-62752&mkt_tok=eyJpIjoiTlRFME1UaG1ZV0pqTldWaCIsInQiOiJDMGhuaUlwdmxkajlFTTFhbmdCVExDTWhQTDV2MlwvT3ZhREsrZ2pLK2VFOVJ0RVMyNVB2cElsZnMxUTFOdjRGaWt3Mkw1OExTSnlRcGZlMGJjSFBBY21sVmhYcHVIQTR3cnJTdjk2eWRXUU9ZZitWWitzWkxjMlhXQ0hnR3RxblIifQ%3D%3D) and in the process of doing so, helps achieve this ideal user scenario.  
+
+So to try to get an up close look at RAPIDS, I recently went to [GTC DC](https://www.nvidia.com/en-us/gtc-dc/). Pondering over what I learned at the conference, I've realized that RAPIDS has a place in the following trends that all lead to 'rapid' data science iteration.  
+
+### The distinctions between analytical databases and data processing systems are blurring.
+
+[Spark can do SQL. Spark can do dataframe operations. Some pandas operations resemble SQL operations and vice versa](https://github.com/szilard/benchm-databases). Functionally, the only thing that a data processing framework needs to have in order for it to be considered an analytical database is data management. The best (only?) effort I've seen so far that tries to bridge data processing and databases from a programmer's aspect is [Ibis](https://docs.ibis-project.org/). For the execution aspect, executing SQL on GPU dataframes (a component of RAPIDS) is [here](https://blog.blazingdb.com/announcing-blazingsql-a-gpu-sql-engine-for-rapids-open-source-software-from-nvidia-11e115ba7dd7).  
+
+### High-performance computing meets data science.
+
+HPC software and hardware addresses distributed computing and accelerated computing on GPUs as well as on CPUs. So what's the problem? Well, traditionally, HPC was less concerned with performing operations over massive amounts of data that would have to flow through some I/O bus bottleneck from a disk. There was a mismatch between HPC hardware & software and data science workloads.  
+
+Nonetheless, today, 'deep learning' is a data science application that makes use of HPC capabilities. On the hardware side, the HPC community is more committed to building facilities that can [support a variety of workloads](https://www.hpcwire.com/2018/01/25/hpc-ai-two-communities-future/) including machine learning and 'big data analytics'.  
+
+### Data scientist tools are being pushed upstream the data science pipeline.
+
+'Big data analytics' in the context of data science are the steps that happen before model training that often involve relatively simple operations on large amounts of data (that don't fit on one machine) such as joining, selection, filtering, cleaning, and perhaps feature generation. These tasks are usually the responsibility of databases and 'big data' processing systems like Spark.  
+
+Unfortunately for data scientists, databases have rigid interfaces and are not easily programmable (SQL is not a programming language, ok?!). Spark offers decent programmability but runs on the Java VM. This is quite foreign to numerical programmers used to R, Python, C, Fortran, and now, Julia.  
+
+But that didn't stop data science engineers from pushing their favorite wares into the 'big data' realm.  
+
+Currently, the impressive [Dask](http://docs.dask.org/en/latest/spark.html) library is pretty much the goto tool for easy Python-based distributed computing (which readily integrates with compiled code for execution on GPUs or CPUs). More recently however, [Ray has emerged as another library](https://github.com/ray-project/ray/issues/642) that can be used for distributed computation which, in my opinion, offers _potentially_ better integrations with RAPIDS than Dask (but that's another subject).  
+
+Another interesting work, if all you care about is Tensorflow, is [Tensorflow Transform](https://www.tensorflow.org/tfx/transform/get_started) which is a framework to fully integrate the data science pipeline covering both training and serving situations in one swoop.  
+
+### Data science libraries are decoupling their interface from their execution.
+
+It should be easy to argue that numpy, pandas, and sklearn have been successful. Unfortunately, the use of these tools is generally tied to a single CPU on a machine. Nonetheless, due to their success, their interfaces have become models to emulate for distributed data science (ok, [pandas not so much](https://pandas.pydata.org/pandas-docs/stable/indexing.html) :/ ). For example, Ray and Dask have 'distributed pandas'. Nvidia's ML algorithms are [copying the sklearn interface](https://github.com/rapidsai/cuml/blob/master/python/notebooks/dbscan_demo.ipynb). As another example, frameworks used for deep learning like [keras](https://keras.io/) and [Tensorflow](https://www.tensorflow.org/) are just thin interfaces that talk to an execution engine.  
+
+As a side benefit, this decoupling should allow one to use their favorite programming language to interact with these compute systems.  
+
+### Machine learning is becoming more automated.
+
+You can imagine that, if you structure and parameterize your machine learning pipeline, it becomes an optimization problem that would benefit greatly from  being able to execute many configurations of the pipeline in order to find the best model. See [this excellent survey on automated machine learning](https://medium.com/georgian-impact-blog/automatic-machine-learning-aml-landscape-survey-f75c3ae3bbf2).  
+
+### Distributed machine learning workflows are being developed.
+
+These days you can easily request a compute cluster from, say, Amazon, and be productive within about 10 minutes. Acquiring and deploying software to distributed systems is comparatively easy these days compared to just five years ago.  
+
+Kubernetes has been important in allowing developers to focus more on building applications instead of managing a distributed system. Now, users shouldn't have to deal with Kubernetes directly but they can be given a 'handle' to the cluster that details the available resources provided by Kubernetes.  
+
+As a result, [Kubeflow](https://www.kubeflow.org/) was developed as a solution to manage machine learning deployment on Kubernetes. Also, [Pachyderm](http://www.pachyderm.io/) manages data science workflows on Kubernetes.  
+
+### Conclusions
+
+While exciting, **RAPIDS isn't mature yet**. At the moment, RAPIDS is a set of libraries that need to be tied together to make a user-friendly experience. This is more challenging than typical software as developers have to consider, 1., distributed computing and, 2., GPU computing in addition to, 3., machine learning algorithms. I hope this added complexity doesn't reduce the number of possible contributors.  
+
+Personally, I'd like to see some more top-down efforts to achieving the data scientist's dream of converged, distributed, and accelerated data science by defining some interface(s) to perform data science (sklearn has emerged as an excellent model!)*. What I'm seeing so far is more bottom-up: Nvidia implementing some algorithms, Anaconda providing Dask for distributed computations, and Arrow providing the data structures. As a user, I shouldn't have to make software choices corresponding to different hardware scenarios: single CPU, multiple CPU single machine, CPUs on multiple machines, single GPU, multiple GPUs single machine, GPUs on multiple machines, and even heterogeneous hardware situations (Is this asking for too much?!).  
+
+**The usability of RAPIDS is critical to its success**. RAPIDS is supposed to enable 'rapid' iteration. One can only rapidly iterate if the RAPIDS workflow is as easy to use as what has been developed for 'traditional' single CPU workflows minding that CPUs might be better for some cases.  
+
+But even with an ideal data scientist user experience, **GPU databases will still have their place as databases**. However, I expect that the GPU databases will accommodate RAPIDS workflows by at least providing low-resistance data interchange with RAPIDS components via GPU dataframes.  
+
+------
+* Maybe a shim can be made between a user and sklearn that intercepts calls and dispatches to distributed, possibly GPU-equipped,  systems if such a system is available and implements the requested call.
+
+---
+comments: true
+
+
+
+
+

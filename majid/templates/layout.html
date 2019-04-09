@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{{ '/static/style.css'|url }}">
+<title>{% block title %} Welcome {% endblock %} — {{bag('globals', 'me', 'FirstName')}} {{bag('globals','me', 'LastName')}}  </title>
+<body>
+  <header>
+    <h1> {{ bag('globals', 'me', 'FirstName') }} {{ bag('globals','me', 'LastName') }} </h1>
+    <nav>
+      <ul class="nav navbar-nav">
+        <li{% if this._path == '/' %} class="active"{% endif
+          %}><a href="{{ '/'|url }}">Home</a></li>
+        {% for href, title in [
+          ['/blog', 'Blog'],
+          ['/portfolio/portfolio.html', 'Portfolio'],
+          ['/connect', 'Connect']
+        ] %}
+          <li{% if this.is_child_of(href) %} class="active"{% endif
+            %}><a href="{{ href|url }}">>{{ title }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </header>
+  <div class="page">
+    {% block body %}{% endblock %}
+  </div>
+  <footer>
+      <center>
+        &copy; Copyright {{ bag('globals', 'context', 'CurrentYear') }} by
+        <br>
+        <img src="{{'/sig.svg'|url}}" width="150px" />
+        <br>
+        {{ bag('globals', 'me', 'FirstName') }} {{ bag('globals','me', 'LastName') }}.
+        <br>
+        This site was made with <a href=http://www.getlektor.com>Lektor</a>.
+      </center>
+  </footer>
+</body>

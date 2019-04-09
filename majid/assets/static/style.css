@@ -1,0 +1,49 @@
+body {
+    font-family: 'Georgia', Times, serif;
+    margin: 50px 25px;
+    background: #0f0f0f;
+}
+
+footer {
+    font-size: 10px;
+    color: #5b5b5b;
+}
+
+a {
+    color: #1f78c2;
+}
+
+a:hover {
+    color: #33bbdf;
+}
+
+header,  div.page {
+    width: 600px;
+    margin: 0 auto;
+    background: #000147;
+    padding: 20px 30px;
+}
+
+header h1 {
+    color:  #f9f9f9; 
+    margin: 0;
+    font-weight: normal;
+    font-size: 42px;
+    font-family: 'Tw Cen MT';
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 8px 0 0;
+    padding: 0;
+}
+
+div.page {
+    background: #f9f9f9;
+}

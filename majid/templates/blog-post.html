@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% from "macros/blog.html" import render_blog_post %}
+
+{% block body %}
+  {{ render_blog_post(this) }}
+
+{% if this.comments %}
+<div class="comments">{{ render_disqus_comments() }}</div>
+{% endif %}
+<div class="ga-script">{{ generate_google_analytics() }}</div>
+
+{% endblock %}

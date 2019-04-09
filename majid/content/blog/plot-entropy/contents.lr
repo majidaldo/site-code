@@ -1,0 +1,39 @@
+title: Image entropy can be used to automatically select scatter plot transparency
+---
+pub_date: 2018-12-02
+---
+author: Majid alDosari
+---
+body:
+
+**Problem**: As a data scientist, you make scatter plots to assess visually a distribution of points. However, many times the points are too dense which can give you a wrong impression about the point distribution. So, you might adjust the transparency setting (usually called alpha) a few times. Now, let's say you change the dataset. Again, repeat adjusting the transparency.
+
+**Solution**: Optimize the plot image entropy because it quantifies the 'variety' of color in it.
+
+Why?
+
+When you adjust the transparency, you are eyeballing a measure of image color 'variety'. I went for an information-theortic measure of 'variety'/'dispersion' as opposed to a statistical one (like standard deviation). What I like about information theory is that I can be less mindful of specific statistical distributions and models.
+
+The magic line to calculate color image entropy with scipy/numpy is:
+```
+entropy(histogramdd(img, bins=[arange(256)]*3)[0].flatten(), base=2)
+```
+where img is shape (width*height, 3) with 8-bit resolution for each color.
+
+The below figures show a monochromatic and color version of a data set scatter plot with alpha (a) and entropy (s) annotated at the top right. The alpha was varied which results in different entropy values. The red annotation signifies the highest entropy.
+
+I think the utility and quantification is easier to see in the monochromatic version perhaps due to it being less 'busy'. But the numbers don't lie!
+
+![color](color_entropy.png) |  ![mono](mono_entropy.png)
+
+I'd like to package this somehow if there is interest.
+---
+_hidden: no
+---
+tags:
+visualization
+information theory
+
+---
+description:
+a principled way to set plot transparency

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% from "macros/blog.html" import render_blog_listing %}
+
+{% block body %}
+
+
+<h3>Tag: {{ this.tag }}</h3>
+<ul>
+  {% for i in this.items %}
+    <li> {{render_blog_listing(i)}} </li>
+  {% else %}
+    <em>No items.</em>
+  {% endfor %}
+</ul>
+
+{% endblock %}
